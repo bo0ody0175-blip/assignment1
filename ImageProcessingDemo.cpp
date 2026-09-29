@@ -1,10 +1,9 @@
-
-
 #include <iostream>
 using namespace std;
 #include "Image_Class.h"
-void black_and_white(Image& image) 
-    {
+#include "UserChoice.h"
+void black_and_white(Image& image)
+{
     for (int i = 0; i < image.width; ++i) {
         for (int j = 0; j < image.height; ++j) {
             double avg = 0;
@@ -30,7 +29,8 @@ void gray_scale(Image& image) {
             unsigned int avg = 0;
 
             for (int k = 0; k < 3; ++k) {
-                avg += image(i, j, k);}
+                avg += image(i, j, k);
+            }
             avg /= 3;
             image(i, j, 0) = avg;
             image(i, j, 1) = avg;
@@ -71,64 +71,44 @@ void flip(Image& image) {
             }
         }
     }
-   
+
 }
 void rotate_image(Image& image) {
     int angle;
-    cout<<"Enter rotation angle(90, 180, or 270):";
-    cin>>angle;
+    cout << "Enter rotation angle(90, 180, or 270):";
+    cin >> angle;
     if (angle == 90) {
-        Image rotated( image.height,image.width );
+        Image rotated(image.height, image.width);
         for (int i = 0; i < image.width; ++i) {
             for (int j = 0; j < image.height; ++j) {
                 for (int k = 0; k < 3; ++k) {
-                    rotated.setPixel(image.height - 1 - j,i,k,image.getPixel(i,j,k));
+                    rotated.setPixel(image.height - 1 - j, i, k, image.getPixel(i, j, k));
                     image = rotated;
 
 
 
-                            }
-                        }
-                    }
-                }else if (angle == 180) {
-                    Image rotated( image.width,image.height );
-                    for (int i = 0; i < image.width; ++i) {
-                        for (int j = 0; j < image.height; ++j) {
-                            for (int k = 0; k < 3; ++k) {
-                                rotated.setPixel(image.width - 1 - i, image.height - 1 - j,k,image.getPixel(i,j,k));
-                                image = rotated;
-                            }
-                        }
-                    }
-                }else if (angle == 270) {
-                    Image rotated( image.height,image.width );
-                    for (int i = 0; i < image.width; ++i) {
-                        for (int j = 0; j < image.height; ++j) {
-                            for (int k = 0; k < 3; ++k) {
-                                rotated.setPixel(j,image.width - 1 - i,k,image.getPixel(i,j,k));
-                                image = rotated;
-                            }
-                        }
-                    }
-                }
-            }
-void darken_lighten(Image& image) {
-    int choise;
-    cout<<"Enter 1 for Darken or 2 for Lighten: ";
-    cin>>choice;
-    if (choice == 1) {
-        for (int i = 0; i < image.height; ++i) {
-            for (int j = 0; j < image.width; ++j) {
-                for (int k = 0; k < 3; ++k) {
-image[i][j][k] = image [i][j][k]-amount ;
                 }
             }
         }
-    }else if (choice == 2) {
-        for (int i = 0; i < image.height; ++i) {
-            for (int j = 0; j < image.width; ++j) {
+    }
+    else if (angle == 180) {
+        Image rotated(image.width, image.height);
+        for (int i = 0; i < image.width; ++i) {
+            for (int j = 0; j < image.height; ++j) {
                 for (int k = 0; k < 3; ++k) {
-image[i][j][k] = image[i][j][k]+amount ;
+                    rotated.setPixel(image.width - 1 - i, image.height - 1 - j, k, image.getPixel(i, j, k));
+                    image = rotated;
+                }
+            }
+        }
+    }
+    else if (angle == 270) {
+        Image rotated(image.height, image.width);
+        for (int i = 0; i < image.width; ++i) {
+            for (int j = 0; j < image.height; ++j) {
+                for (int k = 0; k < 3; ++k) {
+                    rotated.setPixel(j, image.width - 1 - i, k, image.getPixel(i, j, k));
+                    image = rotated;
                 }
             }
         }
@@ -136,9 +116,100 @@ image[i][j][k] = image[i][j][k]+amount ;
 }
 
 
+void oldTV(Image& image)
+{
+    for (int i = 0; i < image.width; i++)
+    {
+        for (int j = 0; j < image.height; j++)
+        {
+            for (int c = 0; c < image.channels; c++)
+            {
+                if (j % 2 == 0)
+                {
+                    image.getPixel(i, j, c) *= 0.5;
+                }
+            }
+        }
+    }
+}
+void darken_lighten(Image& image) {
+    int choice;
+    cout << "Enter 1 for Darken or 2 for Lighten: ";
+    cin >> choice;
+    if (choice == 1) {
+        for (int i = 0; i < image.height; ++i) {
+            for (int j = 0; j < image.width; ++j) {
+                for (int k = 0; k < 3; ++k) {
+
+                }
+            }
+        }
+    }
+    else if (choice == 2) {
+        for (int i = 0; i < image.height; ++i) {
+            for (int j = 0; j < image.width; ++j) {
+                for (int k = 0; k < 3; ++k) {
+
+                }
+            }
+        }
+    }
+}
+
+    
+void performChoice(UserChoice choice, Image& image)
+{
+    switch (choice)
+    {
+        case UserChoice::GRAYSCALE:
+            gray_scale(image);
+            cout << "Image converted to Gray Scale successfully.\n";
+        break;
+
+        case UserChoice::BLACKANDWHITE:
+            black_and_white(image);
+            cout << "Image converted to Black and White successfully.\n";
+        break;
+
+        case UserChoice::INVERT:
+            invert_image(image);
+            cout << "Image inverted successfully.\n";
+            break;
+
+        case UserChoice::FLIP:
+            flip(image);
+            cout << "Image flipped successfully.\n";
+            break;
+
+        case UserChoice::ROTATE:
+            rotate_image(image);
+            cout << "Image rotated successfully.\n";
+            break;
+
+        case UserChoice::DARKENlIGHTEN:
+            darken_lighten(image);
+            cout << "Darken image successfully.\n";
+            break;
+
+        case UserChoice::OLDTV:
+            oldTV(image);
+            cout << "Old TV image successfully.\n";
+            break;
+
+    default:
+        break;
+    }
+}
+
+
+bool isValidChoice(int choice)
+{
+    return choice > 0 && choice < 8;
+}
+
 
 int main() {
-    string filename;
+    string filename = "";
     cout << "Pls enter image name: ";
     cin >> filename;
 
@@ -151,39 +222,29 @@ int main() {
     cout << "4. Merge Images\n";
     cout << "5. rotate image\n";
     cout << "6. darken_lighten(image)\n";
-    cout << "Enter choice (1, 2, 3,4,5 or 6): ";
+    cout << "7. Old TV image\n";
+    cout << "Enter choice (1, 2, 3,4,5,6,7 or 8): ";
 
     int choice;
     cin >> choice;
 
-    if (choice == 1) {
-        gray_scale(image);
-        cout << "Image converted to Gray Scale successfully.\n";
-    } else if (choice == 2) {
-        black_and_white(image);
-        cout << "Image converted to Black and White successfully.\n";
-    } else if (choice == 3) {
-        invert_image(image);
-        cout << "Image inverted successfully.\n";
-    } else if (choice == 4) {
-        flip(image);
-        cout << "Image flipped successfully.\n";
-    } else if (choice == 5) {
-        rotate_image(image);
-        cout << "Image rotated successfully.\n";
-    } else if (choice == 6) {
-        darken_lighten(image);
-        cout << "Darken image successfully.\n";
-    } else {
-        cout << "Invalid choice.\n";
+    if (isValidChoice(choice))
+    {
+        performChoice((UserChoice)choice, image);
+
+        cout << "\nPls enter image name to store new image\n";
+        cout << "and specify extension .jpg, .bmp, .png, .tga: ";
+        cin >> filename;
+
+        if (image.saveImage(filename))
+            cout << "Image Saved successfully." << endl;
+        else
+            cout << "Not saved!";
     }
+    else 
+        cout << "Invalid choice.\n";
 
-
-    cout << "\nPls enter image name to store new image\n";
-    cout << "and specify extension .jpg, .bmp, .png, .tga: ";
-    cin >> filename;
-
-    image.saveImage(filename);
+    
 
     return 0;
 }
