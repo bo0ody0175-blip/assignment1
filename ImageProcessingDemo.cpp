@@ -18,13 +18,13 @@ Emails:
 20240312@stud.fci-cu.edu.eg
 
 
-3. Al-Morsy Ibrahim Al-Morsy Ahmed -  S29,30 - ID:20250089 - solved blur,
+3. Al-Morsy Ibrahim Al-Morsy Ahmed -  S29,30 - ID:20250089 - solved blur, rotate
 Emails:
 20250089@stud.fci-cu.edu.eg
 morsyibrahim780@gmail.com
 
 
-4. Mahmoud Ashraf Ahmed Mahmoud -  S29,30 - ID:20250603 - solved
+4. Mahmoud Ashraf Ahmed Mahmoud -  S29,30 - ID:20250603 - solved gray scale, invert 
 Emails:
 20250603@stud.fci-cu.edu.eg
 
