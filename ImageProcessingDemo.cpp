@@ -1,11 +1,13 @@
 
 /*
-File name: 
+
+
+File name:  CS112_A1_Part1_20242309_S29,30_20240312_S29,30_20250089_S29,30_20250603_S29,30.cpp
 Purpose: Photoshop Application that filters images
-Teaching assistant: 
+Teaching assistant: Mennat-Allah Madmouh
 Authors:
 
-1. Mahmoud Hussein, section 29,30 , ID:20242309, solved purple red,old tv
+1. Mahmoud Hussein Sayed -  S29,30 - ID:20242309 - solved purple red,old tv
 Emails:
 20242309@stud.fci-cu.edu.eg
 mh01155402100@gmail.com
@@ -16,21 +18,28 @@ Emails:
 20240312@stud.fci-cu.edu.eg
 
 
-3. 
+3. Al-Morsy Ibrahim Al-Morsy Ahmed -  S29,30 - ID:20250089 - solved blur,
 Emails:
+20250089@stud.fci-cu.edu.eg
+morsyibrahim780@gmail.com
 
 
-4. 
+4. Mahmoud Ashraf Ahmed Mahmoud -  S29,30 - ID:20250603 - solved
 Emails:
+20250603@stud.fci-cu.edu.eg
+
 
  */
 
 
 #include <iostream>
-using namespace std;
 #include "Image_Class.h"
 #include "UserChoice.h"
-void black_and_white(Image& image)
+
+using namespace std;
+
+
+void blackAndWhite(Image& image)
 {
     for (int i = 0; i < image.width; ++i) {
         for (int j = 0; j < image.height; ++j) {
@@ -51,7 +60,9 @@ void black_and_white(Image& image)
     }
 
 }
-void gray_scale(Image& image) {
+
+
+void grayScale(Image& image) {
     for (int i = 0; i < image.width; ++i) {
         for (int j = 0; j < image.height; ++j) {
             unsigned int avg = 0;
@@ -66,7 +77,10 @@ void gray_scale(Image& image) {
         }
     }
 }
-void invert_image(Image& image) {
+
+
+
+void invert(Image& image) {
     for (int i = 0; i < image.width; ++i) {
         for (int j = 0; j < image.height; ++j) {
             for (int k = 0; k < 3; ++k) {
@@ -75,6 +89,9 @@ void invert_image(Image& image) {
         }
     }
 }
+
+
+
 void flip(Image& image) {
     string choice;
     cout << "[a] to Flip Vertically";
@@ -101,7 +118,37 @@ void flip(Image& image) {
     }
 
 }
-void rotate_image(Image& image) {
+
+
+void blur(Image& image) {
+    Image temp = image;
+
+    for (int i = 0; i < image.height; ++i) {
+        for (int j = 0; j < image.width; ++j) {
+            for (int k = 0; k < 3; ++k) {
+                int sum = 0;
+                int count = 0;
+
+                for (int di = -1; di <= 1; ++di) {
+                    for (int dj = -1; dj <= 1; ++dj) {
+                        int ni = i + di;
+                        int nj = j + dj;
+
+                        if (ni >= 0 && ni < image.height &&
+                            nj >= 0 && nj < image.width) {
+                            sum += image(nj, ni,k);
+                            count++;
+                        }
+                    }
+                }
+
+                image(j, i,k) = sum / count;
+            }
+        }
+    }
+}
+
+void rotate(Image& image) {
     int angle;
     cout << "Enter rotation angle(90, 180, or 270):";
     cin >> angle;
@@ -178,46 +225,22 @@ void purple(Image& image)
 }
 
 
-void darken_lighten(Image& image) {
-    int choice;
-    cout << "Enter 1 for Darken or 2 for Lighten: ";
-    cin >> choice;
-    if (choice == 1) {
-        for (int i = 0; i < image.height; ++i) {
-            for (int j = 0; j < image.width; ++j) {
-                for (int k = 0; k < 3; ++k) {
-
-                }
-            }
-        }
-    }
-    else if (choice == 2) {
-        for (int i = 0; i < image.height; ++i) {
-            for (int j = 0; j < image.width; ++j) {
-                for (int k = 0; k < 3; ++k) {
-
-                }
-            }
-        }
-    }
-}
-
 
 void performChoice(UserChoice choice, Image& image)
 {
     switch (choice)
     {
     case UserChoice::GRAYSCALE:
-        gray_scale(image);
+        grayScale(image);
         cout << "Image converted to Gray Scale successfully.\n";
         break;
 
     case UserChoice::BLACKANDWHITE:
-        black_and_white(image);
+        blackAndWhite(image);
         cout << "Image converted to Black and White successfully.\n";
         break;
     case UserChoice::INVERT:
-        invert_image(image);
+        invert(image);
         cout << "Image inverted successfully.\n";
         break;
 
@@ -227,13 +250,13 @@ void performChoice(UserChoice choice, Image& image)
         break;
 
     case UserChoice::ROTATE:
-        rotate_image(image);
+        rotate(image);
         cout << "Image rotated successfully.\n";
         break;
 
-    case UserChoice::DARKENlIGHTEN:
-        darken_lighten(image);
-        cout << "Darken image successfully.\n";
+    case UserChoice::BLUR:
+        blur(image);
+        cout << "Blur image successfully.\n";
         break;
 
     case UserChoice::OLDTV:
@@ -269,7 +292,7 @@ int main() {
     cout << "3. Invert Image\n";
     cout << "4. Merge Images\n";
     cout << "5. rotate image\n";
-    cout << "6. darken_lighten(image)\n";
+    cout << "6. Blur(image)\n";
     cout << "7. Old TV image\n";
     cout << "8. Purple red image\n";
     cout << "Enter choice (1, 2, 3,4,5,6,7 or 8): ";
