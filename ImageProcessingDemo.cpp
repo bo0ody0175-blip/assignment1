@@ -1,3 +1,30 @@
+
+/*
+File name: 
+Purpose: Photoshop Application that filters images
+Teaching assistant: 
+Authors:
+
+1. Mahmoud Hussein, section 29,30 , ID:20242309, solved purple red,old tv
+Emails:
+20242309@stud.fci-cu.edu.eg
+mh01155402100@gmail.com
+
+
+2. 
+Emails:
+
+
+3. 
+Emails:
+
+
+4. 
+Emails:
+
+ */
+
+
 #include <iostream>
 using namespace std;
 #include "Image_Class.h"
@@ -132,6 +159,24 @@ void oldTV(Image& image)
         }
     }
 }
+
+void purple(Image& image)
+{
+    for (int i = 0; i < image.height; i++)
+    {
+        for (int j = 0; j < image.width; j++)
+        {
+            unsigned int r = image.getPixel(j, i, 0);
+            unsigned int g = image.getPixel(j, i, 1);
+            unsigned int b = image.getPixel(j, i, 2);
+            image(j, i, 0) = r;
+            image(j, i, 1) = g * 0.65;
+            image(j, i, 2) = (b + 30 > 255) ? 255 : b + 30;
+        }
+    }
+}
+
+
 void darken_lighten(Image& image) {
     int choice;
     cout << "Enter 1 for Darken or 2 for Lighten: ";
@@ -156,46 +201,48 @@ void darken_lighten(Image& image) {
     }
 }
 
-    
+
 void performChoice(UserChoice choice, Image& image)
 {
     switch (choice)
     {
-        case UserChoice::GRAYSCALE:
-            gray_scale(image);
-            cout << "Image converted to Gray Scale successfully.\n";
+    case UserChoice::GRAYSCALE:
+        gray_scale(image);
+        cout << "Image converted to Gray Scale successfully.\n";
         break;
 
-        case UserChoice::BLACKANDWHITE:
-            black_and_white(image);
-            cout << "Image converted to Black and White successfully.\n";
+    case UserChoice::BLACKANDWHITE:
+        black_and_white(image);
+        cout << "Image converted to Black and White successfully.\n";
+        break;
+    case UserChoice::INVERT:
+        invert_image(image);
+        cout << "Image inverted successfully.\n";
         break;
 
-        case UserChoice::INVERT:
-            invert_image(image);
-            cout << "Image inverted successfully.\n";
-            break;
+    case UserChoice::FLIP:
+        flip(image);
+        cout << "Image flipped successfully.\n";
+        break;
 
-        case UserChoice::FLIP:
-            flip(image);
-            cout << "Image flipped successfully.\n";
-            break;
+    case UserChoice::ROTATE:
+        rotate_image(image);
+        cout << "Image rotated successfully.\n";
+        break;
 
-        case UserChoice::ROTATE:
-            rotate_image(image);
-            cout << "Image rotated successfully.\n";
-            break;
+    case UserChoice::DARKENlIGHTEN:
+        darken_lighten(image);
+        cout << "Darken image successfully.\n";
+        break;
 
-        case UserChoice::DARKENlIGHTEN:
-            darken_lighten(image);
-            cout << "Darken image successfully.\n";
-            break;
-
-        case UserChoice::OLDTV:
-            oldTV(image);
-            cout << "Old TV image successfully.\n";
-            break;
-
+    case UserChoice::OLDTV:
+        oldTV(image);
+        cout << "Old TV image successfully.\n";
+        break;
+    case UserChoice::PURPLE:
+        purple(image);
+        cout << "Purple image successfully.\n";
+        break;
     default:
         break;
     }
@@ -204,7 +251,7 @@ void performChoice(UserChoice choice, Image& image)
 
 bool isValidChoice(int choice)
 {
-    return choice > 0 && choice < 8;
+    return choice > 0 && choice < 9;
 }
 
 
@@ -223,6 +270,7 @@ int main() {
     cout << "5. rotate image\n";
     cout << "6. darken_lighten(image)\n";
     cout << "7. Old TV image\n";
+    cout << "8. Purple red image\n";
     cout << "Enter choice (1, 2, 3,4,5,6,7 or 8): ";
 
     int choice;
@@ -241,10 +289,7 @@ int main() {
         else
             cout << "Not saved!";
     }
-    else 
+    else
         cout << "Invalid choice.\n";
-
-    
-
     return 0;
 }
