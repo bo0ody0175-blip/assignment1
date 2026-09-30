@@ -292,7 +292,7 @@ int main() {
     cout << "3. Invert Image\n";
     cout << "4. Flip Images\n";
     cout << "5. rotate image\n";
-    cout << "6. darken_lighten(image)\n";
+    cout << "6. Blur image\n";
     cout << "7. Old TV image\n";
     cout << "8. Purple red image\n";
     cout << "Enter choice (1, 2, 3,4,5,6,7 or 8): ";
