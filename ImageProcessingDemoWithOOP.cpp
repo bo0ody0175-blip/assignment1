@@ -1,3 +1,35 @@
+/*
+
+
+File name:  CS112_A1_Part1_20242309_S29,30_20240312_S29,30_20250089_S29,30_20250603_S29,30.cpp
+Purpose: Photoshop Application that filters images
+Teaching assistant: Mennat-Allah Madmouh
+Authors:
+
+1. Mahmoud Hussein Sayed -  S29,30 - ID:20242309 - solved purple red,old tv
+Emails:
+20242309@stud.fci-cu.edu.eg
+mh01155402100@gmail.com
+
+
+2. Abdulrhman Mohammed Abdulrhman - S29,30 - ID:20240312 - solved black_and_white , flip
+Emails:
+20240312@stud.fci-cu.edu.eg
+
+
+3. Al-Morsy Ibrahim Al-Morsy Ahmed -  S29,30 - ID:20250089 - solved blur, rotate
+Emails:
+20250089@stud.fci-cu.edu.eg
+morsyibrahim780@gmail.com
+
+
+4. Mahmoud Ashraf Ahmed Mahmoud -  S29,30 - ID:20250603 - solved gray scale, invert 
+Emails:
+20250603@stud.fci-cu.edu.eg
+
+
+ */
+
 #include <iostream>
 #include <string>
 #include "ImageEditor.h" 
