@@ -23,50 +23,22 @@ Emails:
 morsyibrahim780@gmail.com
 
 
-4. Mahmoud Ashraf Ahmed Mahmoud -  S29,30 - ID:20250603 - solved gray scale, invert 
+4. Mahmoud Ashraf Ahmed Mahmoud -  S29,30 - ID:20250603 - solved gray scale, invert
 Emails:
 20250603@stud.fci-cu.edu.eg
 
 
  */
 
+
+
+
 #include <iostream>
 #include <string>
 #include "ImageEditor.h" 
+#include "Utility.h"
 
 using namespace std;
-
-
-string readString(const string message)
-{
-    string s = "";
-    cout << message << endl;
-    cin >> s;
-    return s;
-}
-
-int readNumber(int from, int between, string message)
-{
-    int x = 0;
-    cout << message << endl;
-    cin >> x;
-    if (x < from || x > between)
-    {
-        cout << "Invalid Number!";
-        x = -1;
-    }
-    return x;
-
-}
-
-char readChar(const string message)
-{
-    char ch = ' ';
-    cout << message << endl;
-    cin >> ch;
-    return ch;
-}
-
 
 void displayOptions()
 {
@@ -83,7 +55,7 @@ void displayOptions()
 
 void flip(ImageEditor& editor) 
 {
-    char ch = readChar("[a] to Flip Vertically\n[b] to Flip Horizontally\n");
+    char ch = Utility::readChar("[a] to Flip Vertically\n[b] to Flip Horizontally\n");
     ch = tolower(ch);
     FlipDirection choice = (FlipDirection)ch;
     editor.flip(choice);
@@ -116,7 +88,7 @@ void perfromChoices(UserChoice choice, ImageEditor& editor)
         break;
 
     case UserChoice::ROTATE:
-        rotationDegree = readNumber(90, 270, "Enter rotation angle(90, 180, or 270) :");
+        rotationDegree = Utility::readNumber(90, 270, "Enter rotation angle(90, 180, or 270) :");
         editor.rotate(rotationDegree);
         cout << "Image rotated successfully.\n";
         break;
@@ -143,7 +115,7 @@ void perfromChoices(UserChoice choice, ImageEditor& editor)
 void perform(ImageEditor& editor)
 {
     displayOptions();
-    UserChoice choice = (UserChoice)(readNumber(1, 8, "Enter choice (1, 2, 3,4,5,6,7 or 8): "));
+    UserChoice choice = (UserChoice)(Utility::readNumber(1, 8, "Enter choice (1, 2, 3,4,5,6,7 or 8): "));
     perfromChoices(choice, editor);
 
 }
@@ -151,7 +123,7 @@ void perform(ImageEditor& editor)
 
 void save(ImageEditor& editor)
 {
-    string newFileName = readString("\nPls enter image name to store new image\nand specify extension .jpg, .bmp, .png, .tga: ");
+    string newFileName = Utility::readString("\nPls enter image name to store new image\nand specify extension .jpg, .bmp, .png, .tga: ");
     if (editor.save(newFileName))
         cout << "Image Saved successfully." << endl;
     else
@@ -160,7 +132,7 @@ void save(ImageEditor& editor)
 
 int main()
 {
-    string fileName = readString("Pls enter image name: ");
+    string fileName = Utility::readString("Pls enter image name: ");
     ImageEditor editor{ Image(fileName) };
     perform(editor);
     save(editor);
