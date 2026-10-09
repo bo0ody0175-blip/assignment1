@@ -279,5 +279,33 @@ public:
             }
         }
     }
-};
+
+    void skew(){
+        double angle;
+        cout<<"Enter skew angle: ";
+        cin >> angle;
+        double red = angle * 3.14159265 / 180.0 ;
+        double tanVal = tan(red);
+        int origW = _image.width;
+        int origH = _image.height;
+        int shift = static_cast<int>(origH * abs(tanVal));
+        Image skewedImg(origW + shift, origH);
+        for (int y=0; y<skewedImg.height; ++y) {
+            for (int x=0; x<skewedImg.width; ++x) {
+                for (int k=0; k<3; ++k) {
+                    skewedImg(x,y,k) = 255;
+                }
+            }
+        }for (int y=0; y<origH; ++y) {
+            int currentShift = static_cast<int>((origH - y)* tanVal);
+            for (int x=0; x<origW; ++x) {
+                int newX = x + currentShift;
+                if (newX >= && newX <skewedImg.width) {
+                    for (int k=0; k<3; ++k) {
+                        skewedImg(newX,y,k) = _image(x,y,k) ;  
+                    }
+                }
+            }
+        }_image = skewedImg;
+    }
 

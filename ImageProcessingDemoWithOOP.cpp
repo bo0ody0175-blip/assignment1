@@ -51,6 +51,7 @@ void displayOptions()
     cout << "6. Blur image\n";
     cout << "7. Old TV image\n";
     cout << "8. Purple red image\n";
+    cout << "17. Skew Image\n";
 }
 
 void flip(ImageEditor& editor) 
@@ -106,6 +107,9 @@ void perfromChoices(UserChoice choice, ImageEditor& editor)
         editor.purpleRed();
         cout << "Purple image successfully.\n";
         break;
+        case UserChoice::SKEW:
+        editor.skew();
+        cout<<"Image skewed successfully.\n";
     default:
         break;
     }
@@ -115,7 +119,7 @@ void perfromChoices(UserChoice choice, ImageEditor& editor)
 void perform(ImageEditor& editor)
 {
     displayOptions();
-    UserChoice choice = (UserChoice)(Utility::readNumber(1, 8, "Enter choice (1, 2, 3,4,5,6,7 or 8): "));
+    UserChoice choice = (UserChoice)(Utility::readNumber(1, 8, "Enter choice (1, 2, 3,4,5,6,7,8, or 17): "));
     perfromChoices(choice, editor);
 
 }
