@@ -94,7 +94,7 @@ void perfromChoices(UserChoice choice, ImageEditor& editor)
         cout << "Image rotated successfully.\n";
         break;
 
-        case UserChoice::BLUR:
+    case UserChoice::BLUR:
         editor.blur();
         cout << "Darken image successfully.\n";
         break;
@@ -107,7 +107,11 @@ void perfromChoices(UserChoice choice, ImageEditor& editor)
         editor.purpleRed();
         cout << "Purple image successfully.\n";
         break;
-        case UserChoice::SKEW:
+    case UserChoice::DETECT_EDGES:
+        editor.detectEdges();
+        cout << "Image edges detected successfully.\n";
+        break;
+    case UserChoice::SKEW:
         editor.skew();
         cout<<"Image skewed successfully.\n";
     default:
@@ -119,7 +123,7 @@ void perfromChoices(UserChoice choice, ImageEditor& editor)
 void perform(ImageEditor& editor)
 {
     displayOptions();
-    UserChoice choice = (UserChoice)(Utility::readNumber(1, 8, "Enter choice (1, 2, 3,4,5,6,7,8, or 17): "));
+    UserChoice choice = (UserChoice)(Utility::readNumber(1, 18, "Enter choice (1, 2, 3,4,5,6,7,8, or 17): "));
     perfromChoices(choice, editor);
 
 }
