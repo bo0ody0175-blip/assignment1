@@ -68,12 +68,12 @@ void perfromChoices(UserChoice choice, ImageEditor& editor)
     int rotationDegree = 0;
     switch (choice)
     {
-    case UserChoice::GRAYSCALE:
+    case UserChoice::GRAY_SCALE:
         editor.grayScalse();
         cout << "Image converted to Gray Scale successfully.\n";
         break;
 
-    case UserChoice::BLACKANDWHITE:
+    case UserChoice::BLACK_AND_WHITE:
         editor.blackAndWhite();
         cout << "Image converted to Black and White successfully.\n";
         break;
@@ -99,7 +99,7 @@ void perfromChoices(UserChoice choice, ImageEditor& editor)
         cout << "Darken image successfully.\n";
         break;
 
-    case UserChoice::OLDTV:
+    case UserChoice::OLD_TV:
         editor.oldTV();
         cout << "Old TV image successfully.\n";
         break;
@@ -114,6 +114,8 @@ void perfromChoices(UserChoice choice, ImageEditor& editor)
     case UserChoice::SKEW:
         editor.skew();
         cout<<"Image skewed successfully.\n";
+        break;
+        
     default:
         break;
     }
