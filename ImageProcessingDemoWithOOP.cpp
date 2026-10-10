@@ -115,7 +115,10 @@ void perfromChoices(UserChoice choice, ImageEditor& editor)
         editor.skew();
         cout<<"Image skewed successfully.\n";
         break;
-        
+    case UserChoice::OIL_PAINTING:
+        editor.oilpainting();
+        cout << "Oil painting image successgully.\n";
+        break;
     default:
         break;
     }
@@ -125,7 +128,7 @@ void perfromChoices(UserChoice choice, ImageEditor& editor)
 void perform(ImageEditor& editor)
 {
     displayOptions();
-    UserChoice choice = (UserChoice)(Utility::readNumber(1, 18, "Enter choice (1, 2, 3,4,5,6,7,8, or 17): "));
+    UserChoice choice = (UserChoice)(Utility::readNumber(1, 18, "Enter choice (1, 2, 3,4,5,6,7,8,1,7 or 18): "));
     perfromChoices(choice, editor);
 
 }
