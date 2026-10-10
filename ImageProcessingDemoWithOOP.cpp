@@ -103,7 +103,7 @@ void perfromChoices(UserChoice choice, ImageEditor& editor)
         editor.oldTV();
         cout << "Old TV image successfully.\n";
         break;
-    case UserChoice::PURPLERED:
+    case UserChoice::PURPLE_RED:
         editor.purpleRed();
         cout << "Purple image successfully.\n";
         break;
