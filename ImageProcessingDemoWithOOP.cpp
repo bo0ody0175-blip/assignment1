@@ -115,7 +115,10 @@ void perfromChoices(UserChoice choice, ImageEditor& editor)
         editor.skew();
         cout<<"Image skewed successfully.\n";
         break;
-        
+    case UserChoice::OIL_PAINTING:
+        editor.oilpainting();
+        cout << "Oil painting image successgully.\n";
+        break;
     default:
         break;
     }
