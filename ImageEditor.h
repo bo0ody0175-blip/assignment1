@@ -314,7 +314,7 @@ public:
         int width = _image.width;
         int height = _image.height;
         Image result(width, height);
-        for (int y=0, y<height; ++y) {
+        for (int y=0; y<height; ++y) {
             for (int x=0; x<width; ++x){
                 int intensityCount[256] = {0};
                 int sumR[256] = {0};
@@ -324,7 +324,7 @@ public:
                     for (int nx = -radius; nx <= radius; ++nx) {
                         int curX = x + nx ; 
                         int curY = y + ny ; 
-                        if (curX >= 0 && curX < width && carY >= 0 && curY < height) {
+                        if (curX >= 0 && curX < width && curY >= 0 && curY < height) {
                             int r = _image(curX, curY, 0) ;
                            int g = _image(curX, curY, 1) ;
                          int b = _image(curX, curY, 2) ;
@@ -334,21 +334,19 @@ public:
                          intensityCount[intensityBin]++;
                          sumR[intensityBin] += r;
                          sumG[intensityBin] += g;
-                         sumB[intensityBin] += b;  
-                         int maxIndex = 0;
-                         int maxCount = 0;
-                         for (int i = 0; i < levels; ++i) {
-                            if (intensityCount[i] > maxCount) {
-                                maxCount = intensityCount[i];  
-                                maxIndex = i;
-                                }
-                            }
-                         }
-                         if (maxCount>0) {
-                            result(x, y, 0) =sumR[maxIndex] / maxCount;
+                         sumB[intensityBin] += b;
+                         int maxIndex=0;
+                         int maxCount=0;
+                         for (int i=0; i< levels; ++i){
+                        if (intensityCount[i]> maxCount) {
+                            maxCount = intensityCount[i];  
+                            maxIndex = i;
+                        }
+                         }if (maxCount>0) {
+                         result(x, y, 0) =sumR[maxIndex] / maxCount;
                          result(x, y, 1) =sumG[maxIndex] / maxCount;
                         result(x, y, 2) =sumB[maxIndex] / maxCount;
-
+                         }
                          }
                         }
                     }
