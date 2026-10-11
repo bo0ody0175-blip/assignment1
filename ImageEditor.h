@@ -31,6 +31,28 @@ private:
         _image = rotated;
     }
 
+    
+
+    void _rotate90And270(int rotationDegree)
+    {
+        Image rotated(_image.height, _image.width);
+
+        for (int i = 0; i < _image.width; i++)
+        {
+            for (int j = 0; j < _image.height; j++)
+            {
+                for (int c = 0; c < _image.channels; c++)
+                {
+                    if (_is90Degree(rotationDegree))
+                        rotated(_image.height - 1 - j, _image.width - i, c) = _image(i, j, c);
+                    else
+                        rotated(j, _image.width - 1 - i, c) = _image(i, j, c);
+                }
+            }
+        }
+
+        _image = rotated;
+    }
     void _detectEdges() {
         Image edges(_image.width, _image.height);
 
@@ -68,28 +90,6 @@ private:
 
         _image = edges;
 
-    }
-
-
-    void _rotate90And270(int rotationDegree)
-    {
-        Image rotated(_image.height, _image.width);
-
-        for (int i = 0; i < _image.width; i++)
-        {
-            for (int j = 0; j < _image.height; j++)
-            {
-                for (int c = 0; c < _image.channels; c++)
-                {
-                    if (_is90Degree(rotationDegree))
-                        rotated(_image.height - 1 - j, _image.width - i, c) = _image(i, j, c);
-                    else
-                        rotated(j, _image.width - 1 - i, c) = _image(i, j, c);
-                }
-            }
-        }
-
-        _image = rotated;
     }
 
 
@@ -236,6 +236,65 @@ public:
                     {
                         _image.getPixel(i, j, c) *= 0.5;
                     }
+                }
+            }
+        }
+    }
+     void resize() {
+        int new_width, new_height;
+        cout << "pls enter your photo width\n";
+        cin >> new_width;
+        cout << "pls enter your photo height ";
+        cin >> new_height;
+        Image new_image(new_width, new_height);
+        double width_ratio, height_ratio;
+        width_ratio =
+            (static_cast<double>(_image.width) / static_cast<double>(new_width));
+        height_ratio =
+            (static_cast<double>(_image.height) / static_cast<double>(new_height));
+        for (int i = 0; i < new_width; i++) {
+            for (int j = 0; j < new_height; j++) { 
+                int srcX = static_cast<int>(round(i * width_ratio));
+                int srcY = static_cast<int>(round(j * height_ratio));
+                if (srcX > _image.width - 1) srcX = _image.width - 1;
+                if (srcY > _image.height - 1) srcY = _image.height - 1;
+                for (int k = 0; k < 3; k++) {
+                    new_image(i, j, k) = _image(srcX, srcY, k);
+                }
+            }
+        }
+ 
+        _image = new_image;
+    }
+    void darken_lighten() {
+        
+        if (choice == "A" || choice == "a") {
+            for (int i = 0; i < _image.width; i++) {
+                for (int j = 0; j < _image.height; j++) {
+                    int red = _image(i, j, 0) * 2;
+                    int green = _image(i, j, 1) * 2;
+                    int blue = _image(i, j, 2) * 2;
+                    if (red > 255) {
+                        red = 255;
+                    }
+                    if (green > 255) {
+                        green = 255;
+                    }
+                    if (blue > 255) {
+                        blue = 255;
+                    }
+                    _image(i, j, 0) = red;
+                    _image(i, j, 1) = green;
+                    _image(i, j, 2) = blue;
+                }
+            }
+        }
+        else if (choice == "B" || choice == "b") {
+            for (int i = 0; i < _image.width; i++) {
+                for (int j = 0; j < _image.height; j++) {
+                    _image(i, j, 0) /= 2;
+                    _image(i, j, 1) /= 2;
+                    _image(i, j, 2) /= 2;
                 }
             }
         }

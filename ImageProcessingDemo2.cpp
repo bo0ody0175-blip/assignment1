@@ -470,7 +470,7 @@ Image detect_image_edges(Image& image) {
     return edges;
 }
 
-// function to resize an image
+// function to resize the Image
 Image resize(Image& image) {
     int new_width, new_height;
     cout << "pls enter your photo width\n";

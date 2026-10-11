@@ -230,12 +230,12 @@ void performChoice(UserChoice choice, Image& image)
 {
     switch (choice)
     {
-    case UserChoice::GRAYSCALE:
+    case UserChoice::GRAY_SCALE:
         grayScale(image);
         cout << "Image converted to Gray Scale successfully.\n";
         break;
 
-    case UserChoice::BLACKANDWHITE:
+    case UserChoice::BLACK_AND_WHITE:
         blackAndWhite(image);
         cout << "Image converted to Black and White successfully.\n";
         break;
@@ -259,11 +259,11 @@ void performChoice(UserChoice choice, Image& image)
         cout << "Blur image successfully.\n";
         break;
 
-    case UserChoice::OLDTV:
+    case UserChoice::OLD_TV:
         oldTV(image);
         cout << "Old TV image successfully.\n";
         break;
-    case UserChoice::PURPLE:
+    case UserChoice::PURPLE_RED:
         purple(image);
         cout << "Purple image successfully.\n";
         break;

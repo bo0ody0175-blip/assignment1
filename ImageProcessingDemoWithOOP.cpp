@@ -51,6 +51,8 @@ void displayOptions()
     cout << "6. Blur image\n";
     cout << "7. Old TV image\n";
     cout << "8. Purple red image\n";
+    cout << "9. Darken_And_Lighten Image\n";
+    cout << "11.Resize Image\n";
     cout << "17. Skew Image\n";
 }
 
