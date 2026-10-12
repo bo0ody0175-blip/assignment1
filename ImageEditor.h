@@ -2,6 +2,8 @@
 #include "Image_Class.h"
 #include "UserChoice.h"
 #include "FlipDirection.h"
+#include "BrightnessMode.h"
+
 
 using namespace std;
 
@@ -31,28 +33,6 @@ private:
         _image = rotated;
     }
 
-    
-
-    void _rotate90And270(int rotationDegree)
-    {
-        Image rotated(_image.height, _image.width);
-
-        for (int i = 0; i < _image.width; i++)
-        {
-            for (int j = 0; j < _image.height; j++)
-            {
-                for (int c = 0; c < _image.channels; c++)
-                {
-                    if (_is90Degree(rotationDegree))
-                        rotated(_image.height - 1 - j, _image.width - i, c) = _image(i, j, c);
-                    else
-                        rotated(j, _image.width - 1 - i, c) = _image(i, j, c);
-                }
-            }
-        }
-
-        _image = rotated;
-    }
     void _detectEdges() {
         Image edges(_image.width, _image.height);
 
@@ -93,6 +73,28 @@ private:
     }
 
 
+    void _rotate90And270(int rotationDegree)
+    {
+        Image rotated(_image.height, _image.width);
+
+        for (int i = 0; i < _image.width; i++)
+        {
+            for (int j = 0; j < _image.height; j++)
+            {
+                for (int c = 0; c < _image.channels; c++)
+                {
+                    if (_is90Degree(rotationDegree))
+                        rotated(_image.height - 1 - j, _image.width - i, c) = _image(i, j, c);
+                    else
+                        rotated(j, _image.width - 1 - i, c) = _image(i, j, c);
+                }
+            }
+        }
+
+        _image = rotated;
+    }
+
+
     void _flipVertically()
     {
         for (int i = 0; i < _image.width; ++i) {
@@ -100,6 +102,41 @@ private:
                 for (int k = 0; k < 3; ++k) {
                     _image(i, j, k) = _image(i, _image.height - j - 1, k);
                 }
+            }
+        }
+    }
+
+    void _lighten()
+    {
+        for (int i = 0; i < _image.width; i++) {
+            for (int j = 0; j < _image.height; j++) {
+                int red = _image(i, j, 0) * 2;
+                int green = _image(i, j, 1) * 2;
+                int blue = _image(i, j, 2) * 2;
+                if (red > 255) {
+                    red = 255;
+                }
+                if (green > 255) {
+                    green = 255;
+                }
+                if (blue > 255) {
+                    blue = 255;
+                }
+                _image(i, j, 0) = red;
+                _image(i, j, 1) = green;
+                _image(i, j, 2) = blue;
+            }
+        }
+    }
+
+
+    void _darken()
+    {
+        for (int i = 0; i < _image.width; i++) {
+            for (int j = 0; j < _image.height; j++) {
+                _image(i, j, 0) /= 2;
+                _image(i, j, 1) /= 2;
+                _image(i, j, 2) /= 2;
             }
         }
     }
@@ -115,6 +152,16 @@ private:
         }
     }
 
+
+
+    bool _isValidDimensions(const int x, const int y, const int w, const int h)
+    {
+        return (x + w <= _image.width && y + h <= _image.height) && x > 0 && y > 0
+            && w > 0 && h > 0;
+
+    }
+
+
     bool _is180Degree(int rotationDegree) { return rotationDegree == 180; }
         
     bool _is270Degree(int rotationDegree) { return rotationDegree == 270; }
@@ -123,14 +170,21 @@ private:
     
 public:
 
+    ImageEditor() = default ;
+
     ImageEditor(const Image& image)
     {
         this->_image = image;
     }
 
     bool save(const string newFileName) { return _image.saveImage(newFileName); }
-        
 
+    int imageHeight() { return _image.height; }
+
+    int imageWidth() { return _image.width; }
+
+    
+        
     void grayScalse()
     {
         for (int i = 0; i < _image.width; i++)
@@ -240,65 +294,6 @@ public:
             }
         }
     }
-     void resize() {
-        int new_width, new_height;
-        cout << "pls enter your photo width\n";
-        cin >> new_width;
-        cout << "pls enter your photo height ";
-        cin >> new_height;
-        Image new_image(new_width, new_height);
-        double width_ratio, height_ratio;
-        width_ratio =
-            (static_cast<double>(_image.width) / static_cast<double>(new_width));
-        height_ratio =
-            (static_cast<double>(_image.height) / static_cast<double>(new_height));
-        for (int i = 0; i < new_width; i++) {
-            for (int j = 0; j < new_height; j++) { 
-                int srcX = static_cast<int>(round(i * width_ratio));
-                int srcY = static_cast<int>(round(j * height_ratio));
-                if (srcX > _image.width - 1) srcX = _image.width - 1;
-                if (srcY > _image.height - 1) srcY = _image.height - 1;
-                for (int k = 0; k < 3; k++) {
-                    new_image(i, j, k) = _image(srcX, srcY, k);
-                }
-            }
-        }
- 
-        _image = new_image;
-    }
-    void darken_lighten() {
-        
-        if (choice == "A" || choice == "a") {
-            for (int i = 0; i < _image.width; i++) {
-                for (int j = 0; j < _image.height; j++) {
-                    int red = _image(i, j, 0) * 2;
-                    int green = _image(i, j, 1) * 2;
-                    int blue = _image(i, j, 2) * 2;
-                    if (red > 255) {
-                        red = 255;
-                    }
-                    if (green > 255) {
-                        green = 255;
-                    }
-                    if (blue > 255) {
-                        blue = 255;
-                    }
-                    _image(i, j, 0) = red;
-                    _image(i, j, 1) = green;
-                    _image(i, j, 2) = blue;
-                }
-            }
-        }
-        else if (choice == "B" || choice == "b") {
-            for (int i = 0; i < _image.width; i++) {
-                for (int j = 0; j < _image.height; j++) {
-                    _image(i, j, 0) /= 2;
-                    _image(i, j, 1) /= 2;
-                    _image(i, j, 2) /= 2;
-                }
-            }
-        }
-    }
 
 
     void blur() {
@@ -329,6 +324,24 @@ public:
     }
 
 
+    
+
+
+    void darkenOrLighten(const BrightnessMode mode) {
+        switch (mode)
+        {
+        case BrightnessMode::DARKEN:
+            _darken();
+            break;
+        case BrightnessMode::LIGHTEN:
+            _lighten();
+            break;
+        default:
+            break;
+        }
+    }
+
+
     void invert() {
         for (int i = 0; i < _image.width; ++i) {
             for (int j = 0; j < _image.height; ++j) {
@@ -339,77 +352,126 @@ public:
         }
     }
 
-    void skew(){
-        double angle;
-        cout<<"Enter skew angle: ";
-        cin >> angle;
-        double red = angle * 3.14159265 / 180.0 ;
-        double tanVal = tan(red);
-        int origW = _image.width;
-        int origH = _image.height;
-        int shift = static_cast<int>(origH * abs(tanVal));
-        Image skewedImg(origW + shift, origH);
-        for (int y=0; y<skewedImg.height; ++y) {
-            for (int x=0; x<skewedImg.width; ++x) {
-                for (int k=0; k<3; ++k) {
-                    skewedImg(x,y,k) = 255;
+    void resize(const int newWidth,const int newHeight) {
+        Image new_image(newWidth, newHeight);
+        double width_ratio, height_ratio;
+        width_ratio = (static_cast<double>(_image.width) / static_cast<double>(newWidth));
+        height_ratio = (static_cast<double>(_image.height) / static_cast<double>(newHeight));
+            
+        for (int i = 0; i < newWidth; i++) {
+            for (int j = 0; j < newHeight; j++) {
+                int srcX = static_cast<int>(round(i * width_ratio));
+                int srcY = static_cast<int>(round(j * height_ratio));
+                if (srcX > _image.width - 1) srcX = _image.width - 1;
+                if (srcY > _image.height - 1) srcY = _image.height - 1;
+                for (int k = 0; k < 3; k++) {
+                    new_image(i, j, k) = _image(srcX, srcY, k);
                 }
             }
-        }for (int y=0; y<origH; ++y) {
-            int currentShift = static_cast<int>((origH - y)* tanVal);
-            for (int x=0; x<origW; ++x) {
-                int newX = x + currentShift;
-                if (newX >= && newX <skewedImg.width) {
-                    for (int k=0; k<3; ++k) {
-                        skewedImg(newX,y,k) = _image(x,y,k) ;  
-                    }
-                }
-            }
-        }_image = skewedImg;
+        }
+
+        _image = new_image;
     }
-    void oilpainting() {
+
+
+
+
+    bool crop(const int x , const int y , const int w, const int h)
+    {
+        if (!_isValidDimensions(x, y, w, h))
+            return false;
+        Image cropped(w, h);
+        for (int j = 0; j < h; j++)
+        {
+            for (int i = 0; i < w; i++)
+            {
+                for (int c = 0; c < _image.channels; c++)
+                {
+                    cropped.getPixel(i,j,c) = _image.getPixel(x + i, y + j, c);
+                }
+            }
+        }
+        _image = cropped;
+        return true;
+    }
+
+
+    //void skew() {
+    //    double angle;
+    //    cout << "Enter skew angle: ";
+    //    cin >> angle;
+    //    double red = angle * 3.14159265 / 180.0;
+    //    double tanVal = tan(red);
+    //    int origW = _image.width;
+    //    int origH = _image.height;
+    //    int shift = static_cast<int>(origH * abs(tanVal));
+    //    Image skewedImg(origW + shift, origH);
+    //    for (int y = 0; y < skewedImg.height; ++y) {
+    //        for (int x = 0; x < skewedImg.width; ++x) {
+    //            for (int k = 0; k < 3; ++k) {
+    //                skewedImg(x, y, k) = 255;
+    //            }
+    //        }
+    //    }for (int y = 0; y < origH; ++y) {
+    //        int currentShift = static_cast<int>((origH - y) * tanVal);
+    //        for (int x = 0; x < origW; ++x) {
+    //            int newX = x + currentShift;
+    //            if (newX >=  && newX < skewedImg.width) {
+    //                for (int k = 0; k < 3; ++k) {
+    //                    skewedImg(newX, y, k) = _image(x, y, k);
+    //                }
+    //            }
+    //        }
+    //    }
+    //    _image = skewedImg;
+    //}
+
+    void oilPainting() {
         int radius = 3;
         int levels = 20;
         int width = _image.width;
         int height = _image.height;
         Image result(width, height);
-        for (int y=0; y<height; ++y) {
-            for (int x=0; x<width; ++x){
-                int intensityCount[256] = {0};
-                int sumR[256] = {0};
-                int sumG[256] = {0};
-                int sumB[256] = {0};
+        for (int y = 0; y < height; ++y) {
+            for (int x = 0; x < width; ++x) {
+                int intensityCount[256] = { 0 };
+                int sumR[256] = { 0 };
+                int sumG[256] = { 0 };
+                int sumB[256] = { 0 };
                 for (int ny = -radius; ny <= radius; ++ny) {
                     for (int nx = -radius; nx <= radius; ++nx) {
-                        int curX = x + nx ; 
-                        int curY = y + ny ; 
+                        int curX = x + nx;
+                        int curY = y + ny;
                         if (curX >= 0 && curX < width && curY >= 0 && curY < height) {
-                            int r = _image(curX, curY, 0) ;
-                           int g = _image(curX, curY, 1) ;
-                         int b = _image(curX, curY, 2) ;
-                         int currentIntensity = (r + g + b) /3;
-                         int intensityBin = (currentIntensity * levels) / 256;
-                         if (intensityBin >= levels) intensityBin = levels - 1;
-                         intensityCount[intensityBin]++;
-                         sumR[intensityBin] += r;
-                         sumG[intensityBin] += g;
-                         sumB[intensityBin] += b;
-                         int maxIndex=0;
-                         int maxCount=0;
-                         for (int i=0; i< levels; ++i){
-                        if (intensityCount[i]> maxCount) {
-                            maxCount = intensityCount[i];  
-                            maxIndex = i;
-                        }
-                         }if (maxCount>0) {
-                         result(x, y, 0) =sumR[maxIndex] / maxCount;
-                         result(x, y, 1) =sumG[maxIndex] / maxCount;
-                        result(x, y, 2) =sumB[maxIndex] / maxCount;
-                         }
-                         }
+                            int r = _image(curX, curY, 0);
+                            int g = _image(curX, curY, 1);
+                            int b = _image(curX, curY, 2);
+                            int currentIntensity = (r + g + b) / 3;
+                            int intensityBin = (currentIntensity * levels) / 256;
+                            if (intensityBin >= levels) intensityBin = levels - 1;
+                            intensityCount[intensityBin]++;
+                            sumR[intensityBin] += r;
+                            sumG[intensityBin] += g;
+                            sumB[intensityBin] += b;
+                            int maxIndex = 0;
+                            int maxCount = 0;
+                            for (int i = 0; i < levels; ++i) {
+                                if (intensityCount[i] > maxCount) {
+                                    maxCount = intensityCount[i];
+                                    maxIndex = i;
+                                }
+                            }if (maxCount > 0) {
+                                result(x, y, 0) = sumR[maxIndex] / maxCount;
+                                result(x, y, 1) = sumG[maxIndex] / maxCount;
+                                result(x, y, 2) = sumB[maxIndex] / maxCount;
+                            }
                         }
                     }
                 }
             }
-        }_image = result;
+        }
+        _image = result;
     }
+
+};
+
