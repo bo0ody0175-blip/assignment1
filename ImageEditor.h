@@ -416,7 +416,7 @@ public:
     //        int currentShift = static_cast<int>((origH - y) * tanVal);
     //        for (int x = 0; x < origW; ++x) {
     //            int newX = x + currentShift;
-    //            if (newX >=  && newX < skewedImg.width) {
+    //            if (newX >= 0 && newX < skewedImg.width) {
     //                for (int k = 0; k < 3; ++k) {
     //                    skewedImg(newX, y, k) = _image(x, y, k);
     //                }
