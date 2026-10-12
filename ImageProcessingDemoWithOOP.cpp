@@ -54,6 +54,9 @@ void displayOptions()
     cout << "9. Darken_And_Lighten Image\n";
     cout << "11.Resize Image\n";
     cout << "17. Skew Image\n";
+    cout <<"18.Oil Painting Image\n";
+    cout <<"4.Add Frame to Image\n";
+    cout <<"10.Merge Image\n";
 }
 
 void flip(ImageEditor& editor) 
@@ -121,6 +124,12 @@ void perfromChoices(UserChoice choice, ImageEditor& editor)
         editor.oilpainting();
         cout << "Oil painting image successgully.\n";
         break;
+    case UserChoice::Add_Frame:
+       editor.addFrame();
+       cout <<"Frame added successfully.\n";
+     case UserChoice::merge_image
+       editor.mergeImages();
+       cout <<"Images merged successfully.\n";  
     default:
         break;
     }
@@ -130,7 +139,7 @@ void perfromChoices(UserChoice choice, ImageEditor& editor)
 void perform(ImageEditor& editor)
 {
     displayOptions();
-    UserChoice choice = (UserChoice)(Utility::readNumber(1, 18, "Enter choice (1, 2, 3,4,5,6,7,8,1,7 or 18): "));
+    UserChoice choice = (UserChoice)(Utility::readNumber(1, 18, "Enter choice (1, 2, 3,4,5,6,7,8,9,10,11,17 or 18): "));
     perfromChoices(choice, editor);
 
 }

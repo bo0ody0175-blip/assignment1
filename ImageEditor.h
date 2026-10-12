@@ -373,6 +373,84 @@ public:
         _image = new_image;
     }
 
+void mergeImages(Image& img1, Image& img2, int option) {
+    if (img1.width == img2.width && img1.height == img2.height) {
+        for (int i = 0; i < img1.height; ++i) {
+            for (int j = 0; j < img1.width; ++j) {
+                for (int k = 0; k < img1.channels; ++k) {
+                    img1.imageData[i][j][k] = (img1.imageData[i][j][k] + img2.imageData[i][j][k]) / 2;
+                }
+            }
+        }
+    } else if (option == 1) {
+        int maxW = std::max(img1.width, img2.width);
+        int maxH = std::max(img1.height, img2.height);
+        Image temp1(maxW, maxH, img1.channels);
+        Image temp2(maxW, maxH, img2.channels);
+        temp1.resizeImage(maxW, maxH);
+        temp2.resizeImage(maxW, maxH);
+        for (int i = 0; i < maxH; ++i) {
+            for (int j = 0; j < maxW; ++j) {
+                for (int k = 0; k < temp1.channels; ++k) {
+                    temp1.imageData[i][j][k] = (temp1.imageData[i][j][k] + temp2.imageData[i][j][k]) / 2;
+                }
+            }
+        }
+        img1 = temp1;
+    } else if (option == 2) {
+        int minW = std::min(img1.width, img2.width);
+        int minH = std::min(img1.height, img2.height);
+        Image result(minW, minH, img1.channels);
+        for (int i = 0; i < minH; ++i) {
+            for (int j = 0; j < minW; ++j) {
+                for (int k = 0; k < img1.channels; ++k) {
+                    result.imageData[i][j][k] = (img1.imageData[i][j][k] + img2.imageData[i][j][k]) / 2;
+                }
+            }
+        }
+        img1 = result;
+    }
+    void addFrame(int _frameWidth, int _red, int _green, int _blue) {
+    int _newWidth = width + (2 * _frameWidth);
+    int _newHeight = height + (2 * _frameWidth);
+    
+    unsigned char*** _newImageData = new unsigned char**[_newHeight];
+    for (int _i = 0; _i < _newHeight; ++_i) {
+        _newImageData[_i] = new unsigned char*[_newWidth];
+        for (int _j = 0; _j < _newWidth; ++_j) {
+            _newImageData[_i][_j] = new unsigned char[channels];
+        }
+    }
+    
+    for (int _i = 0; _i < _newHeight; ++_i) {
+        for (int _j = 0; _j < _newWidth; ++_j) {
+            if (_i < _frameWidth || _i >= _newHeight - _frameWidth || 
+                _j < _frameWidth || _j >= _newWidth - _frameWidth) {
+                _newImageData[_i][_j][0] = _red;
+                if (channels > 1) {
+                    _newImageData[_i][_j][1] = _green;
+                    _newImageData[_i][_j][2] = _blue;
+                }
+            } else {
+                for (int _k = 0; _k < channels; ++_k) {
+                    _newImageData[_i][_j][_k] = imageData[_i - _frameWidth][_j - _frameWidth][_k];
+                }
+            }
+        }
+    }
+    
+    for (int _i = 0; _i < height; ++_i) {
+        for (int _j = 0; _j < width; ++_j) {
+            delete[] imageData[_i][_j];
+        }
+        delete[] imageData[_i];
+    }
+    delete[] imageData;
+    
+    imageData = _newImageData;
+    width = _newWidth;
+    height = _newHeight;
+    }
 
 
 
