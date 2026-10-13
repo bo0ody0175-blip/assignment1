@@ -510,5 +510,5 @@ public:
         _image = result;
     }
 
-};
+}
 
