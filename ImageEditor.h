@@ -409,6 +409,45 @@ public:
 
         _image = new_image;
     }
+void addFrame(int fw, int r, int g, int b) {
+    int nw = width + (2 * fw);
+    int nh = height + (2 * fw);
+    
+    unsigned char*** temp = new unsigned char**[nh];
+    for (int i = 0; i < nh; ++i) {
+        temp[i] = new unsigned char*[nw];
+        for (int j = 0; j < nw; ++j) {
+            temp[i][j] = new unsigned char[channels];
+        }
+    }
+    
+    for (int i = 0; i < nh; ++i) {
+        for (int j = 0; j < nw; ++j) {
+            if (i < fw || i >= nh - fw || j < fw || j >= nw - fw) {
+                temp[i][j][0] = r;
+                if (channels > 1) {
+                    temp[i][j][1] = g;
+                    temp[i][j][2] = b;
+                }
+            } else {
+                for (int k = 0; k < channels; ++k) {
+                    temp[i][j][k] = imageData[i - fw][j - fw][k];
+                }
+            }
+        }
+    }
+    
+    for (int i = 0; i < height; ++i) {
+        for (int j = 0; j < width; ++j) {
+            delete[] imageData[i][j];
+        }
+        delete[] imageData[i];
+    }
+    delete[] imageData;
+    
+    imageData = temp;
+    width = nw;
+    height = nh;
 
 
 
@@ -510,5 +549,5 @@ public:
         _image = result;
     }
 
-};
+    };
 
