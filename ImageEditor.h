@@ -323,6 +323,43 @@ public:
         }
     }
 
+    void mergeImages(Image& img1, Image& img2, int option) {
+    if (img1.width == img2.width && img1.height == img2.height) {
+        for (int i = 0; i < img1.height; ++i) {
+            for (int j = 0; j < img1.width; ++j) {
+                for (int k = 0; k < img1.channels; ++k) {
+                    img1.imageData[i][j][k] = (img1.imageData[i][j][k] + img2.imageData[i][j][k]) / 2;
+                }
+            }
+        }
+    } else if (option == 1) {
+        int maxW = std::max(img1.width, img2.width);
+        int maxH = std::max(img1.height, img2.height);
+        Image temp1(maxW, maxH, img1.channels);
+        Image temp2(maxW, maxH, img2.channels);
+        temp1.resizeImage(maxW, maxH);
+        temp2.resizeImage(maxW, maxH);
+        for (int i = 0; i < maxH; ++i) {
+            for (int j = 0; j < maxW; ++j) {
+                for (int k = 0; k < temp1.channels; ++k) {
+                    temp1.imageData[i][j][k] = (temp1.imageData[i][j][k] + temp2.imageData[i][j][k]) / 2;
+                }
+            }
+        }
+        img1 = temp1;
+    } else if (option == 2) {
+        int minW = std::min(img1.width, img2.width);
+        int minH = std::min(img1.height, img2.height);
+        Image result(minW, minH, img1.channels);
+        for (int i = 0; i < minH; ++i) {
+            for (int j = 0; j < minW; ++j) {
+                for (int k = 0; k < img1.channels; ++k) {
+                    result.imageData[i][j][k] = (img1.imageData[i][j][k] + img2.imageData[i][j][k]) / 2;
+                }
+            }
+        }
+        img1 = result;
+    }
 
     
 
